@@ -77,3 +77,10 @@ resource "ibm_container_worker_pool_zone_attachment" "tfwp-dal13" {
   public_vlan_id    = "3527890"
   resource_group_id = data.ibm_resource_group.resource_group.id
 }
+
+# This fails since the command ask Y/n question and expect user input.
+resource "null_resource" "delete-default-worker-pool" {
+  provisioner "local-exec" {
+    command = "ibmcloud ks worker-pool rm --cluster ${ibm_container_cluster.tfcluster.id} --worker-pool ${ibm_container_cluster.tfcluster.worker_pools.0.id}"
+  }
+}
